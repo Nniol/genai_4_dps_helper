@@ -67,3 +67,7 @@ def print_milvus_search_results(
             if key_to_return:
                 ret_list.append(getattr(entity, key_to_return))
             print(entity_str)
+
+    if len(ret_list) > 0:
+        return ret_list
+    return None
