@@ -3,7 +3,7 @@ requires = ["setuptools>=73.0","ibm_watsonx_ai==1.1.6","pandas==2.1.4","pymilvus
 build-backend = "setuptools.build_meta"
 [project]
 name = "genai_4_dps_helper"
-version = "0.0.9"
+version = "0.0.10"
 authors = [
     { name="Benjamin A. Janes", email="benjamin.janes@se.ibm.com" },
 ]
