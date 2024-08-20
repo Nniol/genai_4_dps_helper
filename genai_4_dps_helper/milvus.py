@@ -30,9 +30,6 @@ def get_milvus_connection(
     with open(server_pem_path, "a") as fp:
         fp.write(milvus_credentials["ssl_certificate"])
 
-    print(milvus_credentials)
-    print(server_pem_path)
-
     connections.connect(
         host=milvus_credentials["host"],
         port=milvus_credentials["port"],
@@ -44,15 +41,19 @@ def get_milvus_connection(
     )
 
 
-def print_milvus_search_results(search_results: List):
+def print_milvus_search_results(search_results: List, entity_keys_to_show: List[str]):
     """Prints the results of Milvus searches in a readable fashion
 
     Args:
         search_results (List): A List [] object returned from a mlivus collection search method
+        entity_keys_to_show (List[str]): Keys of attributes in the list object, this keys will be returned in the printed list
     """
     for hits in search_results:
         print(hits.ids)
         print(hits.distances)
         for entity in hits:
-            entity_str = f"{entity.name}: {entity.ingredients}"
+            entity_str = f"{entity.name}: "
+            entity_str += " ".join(
+                [f"{getattr(entity, key)}" for key in entity_keys_to_show]
+            )
             print(entity_str)
