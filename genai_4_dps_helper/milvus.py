@@ -1,4 +1,5 @@
 import os
+from typing import List
 
 from ibm_watsonx_ai import APIClient
 from pandas import DataFrame
@@ -19,16 +20,18 @@ def get_milvus_connection(
     milvus_connection_id = client_connections.loc[
         client_connections["NAME"] == "MilvusConnection", "ID"
     ].values[0]
-    print(milvus_connection_id)
     milvus_credentials = (
         client.connections.get_details(milvus_connection_id)
         .get("entity")
         .get("properties")
     )
-
-    os.remove(server_pem_path)
+    if os.path.isfile(server_pem_path):
+        os.remove(server_pem_path)
     with open(server_pem_path, "a") as fp:
         fp.write(milvus_credentials["ssl_certificate"])
+
+    print(milvus_credentials)
+    print(server_pem_path)
 
     connections.connect(
         host=milvus_credentials["host"],
@@ -39,3 +42,17 @@ def get_milvus_connection(
         server_name="watsonxdata",
         secure=True,
     )
+
+
+def print_milvus_search_results(search_results: List):
+    """Prints the results of Milvus searches in a readable fashion
+
+    Args:
+        search_results (List): A List [] object returned from a mlivus collection search method
+    """
+    for hits in search_results:
+        print(hits.ids)
+        print(hits.distances)
+        for entity in hits:
+            entity_str = f"{entity.name}: {entity.ingredients}"
+            print(entity_str)
