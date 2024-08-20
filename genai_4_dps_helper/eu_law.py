@@ -39,6 +39,7 @@ def sectionise_eu_law_document(
             - "text": The text
 
     """
+    section_number: str = ""
     sections: List[Dict] = []
     for section in top_level_sections:
         # Handle the case with '.' matches on the first char and remove the full stop
