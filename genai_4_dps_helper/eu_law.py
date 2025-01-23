@@ -77,7 +77,7 @@ def sectionise_eu_law_document(
                 index = 0  # Get back pairs of articles, one with name then the text, get the number and append to chapter name and then the text from the second part
                 while index < len(articles):
                     a_section = {
-                        "section_number": f'{section["chapter_number"]}: {articles[index]}',
+                        "section_number": f"{section['chapter_number']}: {articles[index]}",
                         "text": articles[index + 1],
                     }
                     if verbose:

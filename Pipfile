@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ibm-watsonx-ai = "1.2.1"
+pandas = "2.1.4"
+pymilvus = "2.5.3"
+pydantic = "2.10.5"
+pymupdf = "1.25.2"
+
+[dev-packages]
+ruff = "*"
+twine = "*"
+build = "*"
+
+[requires]
+python_version = ">=3.11"

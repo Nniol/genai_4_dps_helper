@@ -60,7 +60,7 @@ def print_milvus_search_results(
         print(hits.ids)
         print(hits.distances)
         for entity in hits:
-            entity_str = f"{getattr(entity,title_key)}: "
+            entity_str = f"{getattr(entity, title_key)}: "
             entity_str += " ".join(
                 [f"{getattr(entity, key)}" for key in entity_keys_to_show]
             )
