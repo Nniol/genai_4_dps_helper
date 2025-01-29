@@ -1,7 +1,7 @@
 """
-This code is the intellectual property of IBM and is not to be used by non-IBM practitioners 
-nor distributed outside of IBM internal without having the proper clearance. 
-For full usage guidelines refer to Guidelines for Code Accelerator Consumption. 
+This code is the intellectual property of IBM and is not to be used by non-IBM practitioners
+nor distributed outside of IBM internal without having the proper clearance.
+For full usage guidelines refer to Guidelines for Code Accelerator Consumption.
 https://w3.ibm.com/services/lighthouse/help-and-support/terms#asset-consumption
 
 @author Benjamin A. Janes (benjamin.janes@se.ibm.com)
@@ -23,7 +23,9 @@ def get_logger(name):
     ch.setLevel(log_level)
 
     # Create a formatter that includes the class name and line number
-    formatter = logging.Formatter("%(levelname)s:    app:orchestration-layer - %(asctime)s - %(name)s [%(lineno)d]: %(message)s")
+    formatter = logging.Formatter(
+        "%(levelname)s:    app:orchestration-layer - %(asctime)s - %(name)s [%(lineno)d]: %(message)s"
+    )
     ch.setFormatter(formatter)
 
     # Add the handler to the logger

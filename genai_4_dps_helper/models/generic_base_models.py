@@ -1,7 +1,7 @@
 """
-This code is the intellectual property of IBM and is not to be used by non-IBM practitioners 
-nor distributed outside of IBM internal without having the proper clearance. 
-For full usage guidelines refer to Guidelines for Code Accelerator Consumption. 
+This code is the intellectual property of IBM and is not to be used by non-IBM practitioners
+nor distributed outside of IBM internal without having the proper clearance.
+For full usage guidelines refer to Guidelines for Code Accelerator Consumption.
 https://w3.ibm.com/services/lighthouse/help-and-support/terms#asset-consumption
 
 @author Benjamin A. Janes (benjamin.janes@se.ibm.com)
@@ -29,16 +29,6 @@ class GenericResponse(BaseModel):
 
 class StatusResponse(BaseModel):
     status: str = Field(..., description="Status string")
-
-    class Config:
-        from_attributes = True
-
-
-class CVAnalysisResponse(BaseModel):
-    betyg: int = Field(..., description="The rating of the CV")
-    orsak: str = Field(..., description="Why the rating was given to the CV")
-    behövs_mer: bool = Field(..., description="Is more information needed to complete the rating")
-    försäkringskassan: bool = Field(..., description="Has the applicant worked at Försäkringskassan")
 
     class Config:
         from_attributes = True
