@@ -11,6 +11,9 @@ import logging
 import os
 from typing import List
 
+from ibm_watsonx_ai import APIClient
+from pandas import DataFrame
+
 from genai_4_dps_helper.base_obj import BaseObj
 
 # This needs to be added before to import ibm_db for windows only, so check it is present
@@ -38,24 +41,27 @@ class DB2Client(BaseObj):
 
     def __init__(
         self,
-        host: str,
-        port: int,
-        database: str,
-        schema: str,
-        uid: str,
-        pwd: str,
-        security: str = "SSL",
-        protocol: str = "TCPIP",
+        client: APIClient,
+        schema: str = None,
     ):
         super(DB2Client, self).__init__()
         self.__schema: str = schema
-        self.__host: str = host
-        self.__port: int = port
-        self.__database: str = database
-        self.__uid: str = uid
-        self.__pwd: str = pwd
-        self.__security: str = security
-        self.__protocol: str = protocol
+        client_connections: DataFrame = client.connections.list()
+        db2_connection_id = client_connections.loc[
+            client_connections["NAME"] == "DB2", "ID"
+        ].values[0]
+        db2_credentials = (
+            client.connections.get_details(db2_connection_id)
+            .get("entity")
+            .get("properties")
+        )
+        self.__host: str = db2_credentials["host"]
+        self.__port: int = db2_credentials["port"]
+        self.__database: str = db2_credentials["database"]
+        self.__uid: str = db2_credentials["username"]
+        self.__pwd: str = db2_credentials["password"]
+        self.__security: bool = bool(db2_credentials["ssl"])
+        self.__protocol: str = "TCPIP"
         self._connection: IBM_DBConnection = self.__get_connection()
         # connState = ibm_db.active(self._connection) # Un comment for debug
         # print(connState)
@@ -89,7 +95,7 @@ class DB2Client(BaseObj):
             if self.__schema is not None:
                 options = {ibm_db.SQL_ATTR_CURRENT_SCHEMA: self.__schema}
             else:
-                options = None
+                options = {}
             conn: IBM_DBConnection = ibm_db.connect(conn_str, "", "", options)
             if conn and self.__schema is not None:
                 # ibm_db.exec_immediate(conn, f"SET SCHEMA {self.__schema}")
