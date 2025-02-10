@@ -3,7 +3,7 @@ requires = ["setuptools>=73.0"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "genai_4_dps_helper"
-version = "0.2.20"
+version = "0.2.25"
 authors = [
     { name="Benjamin A. Janes", email="benjamin.janes@se.ibm.com" },
 ]
@@ -12,14 +12,14 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = ["ibm_watsonx_ai==1.2.2",
     "pandas==2.1.4",
-    "pymilvus==2.5.3",
+    "pymilvus==2.4.10",
     "pydantic==2.10.6",
     "pymupdf==1.25.2",
     "SQLAlchemy==2.0.37",
     "pyhive[presto]==0.7.0",
     "presto-python-client==0.8.4",
     "ibm_db==3.2.5"
-    ]
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",

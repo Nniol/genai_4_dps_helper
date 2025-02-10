@@ -1,6 +1,6 @@
 ibm_watsonx_ai==1.2.2
 pandas==2.1.4
-pymilvus==2.5.3
+pymilvus==2.4.10
 pydantic==2.10.6
 pymupdf==1.25.2
 SQLAlchemy==2.0.37
