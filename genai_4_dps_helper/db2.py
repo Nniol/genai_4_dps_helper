@@ -42,6 +42,8 @@ class DB2Client(BaseObj):
     def __init__(
         self,
         client: APIClient,
+        username: str,
+        password: str,
         schema: str = None,
     ):
         super(DB2Client, self).__init__()
@@ -55,12 +57,13 @@ class DB2Client(BaseObj):
             .get("entity")
             .get("properties")
         )
+        #        print("db2_credentials\n\n\n", db2_credentials, "\n")
         self.__host: str = db2_credentials["host"]
         self.__port: int = db2_credentials["port"]
         self.__database: str = db2_credentials["database"]
-        self.__uid: str = db2_credentials["username"]
-        self.__pwd: str = db2_credentials["password"]
-        self.__security: bool = bool(db2_credentials["ssl"])
+        self.__uid: str = username  # db2_credentials["username"]
+        self.__pwd: str = password  # db2_credentials["password"]
+        self.__security: bool = db2_credentials["ssl"] == "true"
         self.__protocol: str = "TCPIP"
         self._connection: IBM_DBConnection = self.__get_connection()
         # connState = ibm_db.active(self._connection) # Un comment for debug
@@ -80,6 +83,15 @@ class DB2Client(BaseObj):
             log_message = "\n" + ("\n".join(client_info))
             self._logger.debug(log_message)
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self._connection:
+            self.close()
+        if exc_type:
+            print(f"DB2Client error occurred: {exc_val}")
+
     def __get_connection(self) -> IBM_DBConnection:
         try:
             conn_str: str = (
@@ -91,11 +103,12 @@ class DB2Client(BaseObj):
                 + f"PWD={self.__pwd};"
             )
             if self.__security is not None:
-                conn_str += f"SECURITY={os.getenv('DB2_SECURITY')};"
+                conn_str += f"SECURITY={self.__security};"
             if self.__schema is not None:
                 options = {ibm_db.SQL_ATTR_CURRENT_SCHEMA: self.__schema}
             else:
                 options = {}
+            #            print(conn_str)
             conn: IBM_DBConnection = ibm_db.connect(conn_str, "", "", options)
             if conn and self.__schema is not None:
                 # ibm_db.exec_immediate(conn, f"SET SCHEMA {self.__schema}")
@@ -225,13 +238,14 @@ class DB2Client(BaseObj):
         """
         Closes the connection
         """
-        ibm_db.close(self._connection)
-        self._connection = None
+        if ibm_db.active(self._connection):
+            ibm_db.close(self._connection)
+            self._connection = None
 
     def __del__(self):
         """Ensure the connection is closed"""
         # If the connection is an object and it is not closed the close it
-        if self._connection is not None:
+        if self._connection is not None and ibm_db.active(self._connection):
             ibm_db.close(self._connection)
         # Set it to None
         self._connection = None
