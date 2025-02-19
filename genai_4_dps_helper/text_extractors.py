@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 from io import BytesIO
 
-import pymupdf
+from pypdf import PdfReader
 
 from genai_4_dps_helper.base_obj import BaseObj
 
@@ -56,12 +56,11 @@ class TextExtractors(BaseObj):
         if not filename.lower().endswith(".pdf"):  # PDF pdf extraction
             raise ValueError("filename must be a PDF file, ending in .pdf")
 
-        doc = pymupdf.open(stream=data_bytes)
+        doc = PdfReader(stream=data_bytes)
         # Extract text from the PDF
         text = ""
-        for page in doc:
-            text += page.get_text()
-
+        for page in doc.pages:
+            text += page.extract_text()
         # Print the extracted text
         return text
 

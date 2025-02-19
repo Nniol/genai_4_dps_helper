@@ -8,11 +8,8 @@ ibm-watsonx-ai = "1.2.1"
 pandas = "2.1.4"
 pymilvus = "2.4.10"
 pydantic = "2.10.5"
-pymupdf = "1.25.2"
-sqlalchemy = "2.0.37"
-pyhive = {extras = ["presto"], version = "0.7.0"}
-presto-python-client = "0.8.4"
 ibm-db = "3.2.5"
+pypdf = "5.3.0"
 
 [dev-packages]
 ruff = "*"
